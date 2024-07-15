@@ -3,9 +3,9 @@ name: EBS Checker
 on:
   pull_request:
     branches: [ "main" ]
-  path:
-    - 'infrastructure/ebs-checker/*'
-    - 'lambdas/ebs-checker/*'
+    paths:
+      - 'infrastructure/ebs-checker/*'
+      - 'lambdas/ebs-checker/*'
 
 permissions:
     contents: read
@@ -41,5 +41,5 @@ jobs:
       - name: Step 06 - Terraform Validate
         run : terraform -chdir=infrastructure/ebs-checker validate
 
-      - name: Step 07 - Terraform Plan 
+      - name: Step 07 - Terraform Plan
         run : terraform -chdir=infrastructure/ebs-checker plan -input=false -out=tfplan
