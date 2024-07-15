@@ -1,0 +1,45 @@
+name: EBS Checker
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  path:
+    - 'infrastructure/ebs-checker/*'
+    - 'lambdas/ebs-checker/*'
+
+permissions:
+    contents: read
+
+jobs:
+    terraform-plan:
+      name: Test terraform plan
+      runs-on: ubuntu-latest
+      environment: Lambdas-UGF
+      steps:
+
+      - name: Step 01 - Terraform Setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+
+      - name: Step 02 - Terraform Version
+        run : terraform --version
+
+      - name: Step 03 - CheckOut GitHub Repo
+        uses: actions/checkout@v3
+
+      - name: Step 04 - Set AWS Account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region           : ${{ secrets.AWS_REGION }}
+
+      - name: Step 05 - Terraform Init
+        run : terraform -chdir=infrastructure/ebs-checker init -input=false
+
+      - name: Step 06 - Terraform Validate
+        run : terraform -chdir=infrastructure/ebs-checker validate
+
+      - name: Step 07 - Terraform Plan 
+        run : terraform -chdir=infrastructure/ebs-checker plan -input=false -out=tfplan
