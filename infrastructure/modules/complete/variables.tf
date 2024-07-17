@@ -35,6 +35,12 @@ variable "lambda_function_timeout" {
   type        = number
 }
 
+variable "lambda_function_memory_size" {
+  description = "The memory size of the Lambda function"
+  type        = number
+  default     = 128
+}
+
 variable "lambda_function_source_code_path" {
   description = "The path to the source code of the Lambda function"
   type        = string

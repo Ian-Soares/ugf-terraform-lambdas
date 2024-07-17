@@ -7,6 +7,7 @@ module "complete" {
   lambda_function_handler          = "lambda_function.lambda_handler"
   lambda_function_runtime          = "python3.8"
   lambda_function_timeout          = 120
+  lambda_function_memory_size      = 1028
   lambda_function_source_code_path = "../../lambdas/ebs-checker"
   lambda_function_custom_policy_arns = [
     "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/ebs-modify-policy",
