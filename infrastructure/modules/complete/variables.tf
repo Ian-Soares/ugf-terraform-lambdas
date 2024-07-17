@@ -105,3 +105,57 @@ variable "sns_topic_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_eventbridge_schedule_group" {
+  description = "Whether to create the schedule group"
+  type        = bool
+  default     = true
+}
+
+variable "eventbridge_schedule_group_name" {
+  description = "The name of the schedule group"
+  type        = string
+  default     = "default"
+}
+
+variable "create_eventbridge_schedule" {
+  description = "Whether to create the schedule"
+  type        = bool
+  default     = true
+}
+
+variable "eventbridge_schedule_name" {
+  description = "The name of the schedule"
+  type        = string
+  default     = null
+}
+
+variable "eventbridge_flexible_time_window" {
+  description = "The flexible time window"
+  type = object({
+    maximum_window_in_minutes = optional(number, null)
+    mode                      = optional(string, "OFF")
+  })
+  default = {
+    maximum_window_in_minutes = null
+    mode                      = "OFF"
+  }
+}
+
+variable "eventbridge_schedule_expression" {
+  description = "The schedule expression"
+  type        = string
+  default     = "rate(1 hours)"
+}
+
+variable "eventbridge_schedule_target_input" {
+  description = "The input for the schedule target"
+  type        = string
+  default     = null
+}
+
+variable "eventbridge_tags" {
+  description = "The tags to apply to the schedule"
+  type        = map(string)
+  default     = {}
+}

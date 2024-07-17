@@ -6,11 +6,11 @@ on:
     paths:
       - 'infrastructure/lambdas/resizing-service/*'
       - 'lambdas/resizing-service/*'
-  # push:
-  #   branches: [ "main" ]
-  #   paths:
-  #     - 'infrastructure/lambdas/resizing-service/*'
-  #     - 'lambdas/resizing-service/*'
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'infrastructure/lambdas/resizing-service/*'
+      - 'lambdas/resizing-service/*'
 
 permissions:
     contents: read
