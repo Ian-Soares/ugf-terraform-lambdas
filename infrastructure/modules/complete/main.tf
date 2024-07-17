@@ -1,12 +1,14 @@
 module "lambda_function" {
   source = "../lambda-function"
 
-  create           = try(var.create_lambda_function, true)
-  name             = var.lambda_function_name
-  description      = try(var.lambda_function_description, "")
-  handler          = try(var.lambda_function_handler, "lambda_function.lambda_handler")
-  runtime          = try(var.lambda_function_runtime, "python3.8")
-  timeout          = try(var.lambda_function_timeout, 120)
+  create      = try(var.create_lambda_function, true)
+  name        = var.lambda_function_name
+  description = try(var.lambda_function_description, "")
+  handler     = try(var.lambda_function_handler, "lambda_function.lambda_handler")
+  runtime     = try(var.lambda_function_runtime, "python3.8")
+  timeout     = try(var.lambda_function_timeout, 120)
+  memory_size = try(var.lambda_function_memory_size)
+
   source_code_path = var.lambda_function_source_code_path
   vpc_config = try(var.lambda_vpc_config, null) != null ? {
     subnet_ids         = var.lambda_vpc_config.subnet_ids
