@@ -12,9 +12,10 @@ module "complete" {
     "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/ebs-modify-policy",
   ]
   lambda_function_env = {
-    "REGION"     = var.default_aws_region
-    "LOG_LEVEL"  = "INFO"
-    "MODIFY_EBS" = true
+    "REGION"      = var.default_aws_region
+    "LOG_LEVEL"   = "INFO"
+    "MODIFY_EBS"  = true
+    SNS_TOPIC_ARN = module.complete.sns_topic_arn
   }
   lambda_function_tags = {
     "Environment" = "PRD"
@@ -24,6 +25,12 @@ module "complete" {
 
   create_sns_topic = true
   sns_topic_name   = "ebs-checker-topic"
+  sns_topic_subscriptions = [
+    {
+      protocol = "email"
+      endpoint = "ian.soares@selectsolucoes.com"
+    }
+  ]
 
   depends_on = [aws_iam_policy.ebs_modify_policy]
 }

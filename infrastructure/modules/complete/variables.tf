@@ -76,6 +76,15 @@ variable "sns_topic_name" {
   type        = string
 }
 
+variable "sns_topic_subscriptions" {
+  description = "The subscriptions for the SNS topic"
+  type = list(object({
+    protocol = string
+    endpoint = string
+  }))
+  default = []
+}
+
 variable "sns_topic_tags" {
   description = "The tags to apply to the SNS topic"
   type        = map(string)
