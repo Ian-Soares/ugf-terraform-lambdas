@@ -6,11 +6,11 @@ on:
     paths:
       - 'infrastructure/lambdas/ebs-checker/*'
       - 'lambdas/ebs-checker/*'
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'infrastructure/lambdas/ebs-checker/*'
-      - 'lambdas/ebs-checker/*'
+  # push:
+  #   branches: [ "main" ]
+  #   paths:
+  #     - 'infrastructure/lambdas/ebs-checker/*'
+  #     - 'lambdas/ebs-checker/*'
 
 permissions:
     contents: read
