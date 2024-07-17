@@ -1,5 +1,5 @@
 module "complete" {
-  source = "../modules/complete"
+  source = "../../modules/complete"
 
   create_lambda_function           = true
   lambda_function_name             = "ebs-checker-function"
