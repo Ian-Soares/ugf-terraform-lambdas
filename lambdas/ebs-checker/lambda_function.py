@@ -9,6 +9,8 @@ LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
 MODIFY_EBS = os.environ.get('MODIFY_EBS', True)
 SNS_TOPIC_ARN = os.environ.get('SNS_TOPIC_ARN')
 
+logging.basicConfig(level=LOG_LEVEL)
+
 ec2 = boto3.client('ec2', REGION)
 sns = boto3.client('sns', REGION)
 
@@ -75,6 +77,10 @@ def lambda_handler(event, context):
         gp2_volume_ids = [volume['VolumeId'] for volume in volumes]
         # Modify gp2 volumes to gp3
         if bool(MODIFY_EBS): modify_volume_gp3(gp2_volume_ids, REGION)
+        return {
+            'statusCode': 200,
+            'body': json.dumps('EBS Checker executed successfully!')
+        }
     except Exception as e:
         logging.error("Exception: " + str(e))
         raise e
