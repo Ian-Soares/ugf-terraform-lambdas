@@ -69,6 +69,12 @@ variable "custom_policy_arns" {
   default     = []
 }
 
+variable "number_of_custom_policy_attachments" {
+  description = "The number of custom IAM policies to attach to the Lambda function"
+  type        = number
+  default     = 0
+}
+
 variable "tags" {
   description = "The tags of the Lambda function"
   type        = map(string)

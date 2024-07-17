@@ -4,12 +4,12 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'infrastructure/ebs-checker/*'
+      - 'infrastructure/lambdas/ebs-checker/*'
       - 'lambdas/ebs-checker/*'
   push:
     branches: [ "main" ]
     paths:
-      - 'infrastructure/ebs-checker/*'
+      - 'infrastructure/lambdas/ebs-checker/*'
       - 'lambdas/ebs-checker/*'
 
 permissions:
@@ -45,13 +45,13 @@ jobs:
           aws-region           : ${{ env.AWS_REGION }}
 
       - name: Step 05 - Terraform Init
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} init -input=false
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} init -input=false
 
       - name: Step 06 - Terraform Validate
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} validate
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} validate
 
       - name: Step 07 - Terraform Plan
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
 
     terraform-apply:
       if: github.event_name == 'push'
@@ -78,13 +78,13 @@ jobs:
           aws-region           : ${{ env.AWS_REGION }}
 
       - name: Step 05 - Terraform Init
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} init -input=false
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} init -input=false
 
       - name: Step 06 - Terraform Validate
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} validate
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} validate
 
       - name: Step 07 - Terraform Plan
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
 
       - name: Step 08 - Terraform Apply
-        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} apply -input=false tfplan
+        run : terraform -chdir=infrastructure/lambdas/${{ env.LAMBDA_NAME }} apply -input=false tfplan

@@ -69,7 +69,7 @@ resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment" {
 }
 
 resource "aws_iam_role_policy_attachment" "custom_policy_attachments" {
-  count = length(var.custom_policy_arns)
+  count = var.number_of_custom_policy_attachments
 
   role       = aws_iam_role.iam_role.name
   policy_arn = var.custom_policy_arns[count.index]
