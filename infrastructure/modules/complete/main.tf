@@ -23,5 +23,7 @@ module "sns_topic" {
   create = try(var.create_sns_topic, true)
   name   = var.sns_topic_name
 
+  subscriptions = try(var.sns_topic_subscriptions, [])
+
   tags = merge(var.sns_topic_tags, var.default_tags)
 }
