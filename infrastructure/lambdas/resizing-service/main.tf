@@ -24,17 +24,6 @@ module "scale_up_ecs" {
 
   create_sns_topic = false
 
-  create_eventbridge_schedule_group = true
-  eventbridge_schedule_group_name   = "resizing-services"
-  create_eventbridge_schedule       = true
-  eventbridge_schedule_name         = "scale-up-ecs"
-  eventbridge_schedule_expression   = "cron(0 8 * * ? *)"
-  eventbridge_schedule_target_input = jsonencode({
-    "cluster_name" : "cluster-exemplo-ugf",
-    "service_name" : "nginx-example",
-    "desired_count" : 4
-  })
-
   depends_on = [aws_iam_policy.ecs_modify_policy]
 }
 
@@ -63,17 +52,6 @@ module "scale_down_ecs" {
   }
 
   create_sns_topic = false
-
-  create_eventbridge_schedule_group = false
-  eventbridge_schedule_group_name   = "resizing-services"
-  create_eventbridge_schedule       = true
-  eventbridge_schedule_name         = "scale-down-ecs"
-  eventbridge_schedule_expression   = "cron(0 19 * * ? *)"
-  eventbridge_schedule_target_input = jsonencode({
-    "cluster_name" : "cluster-exemplo-ugf",
-    "service_name" : "nginx-example",
-    "desired_count" : 1
-  })
 
   depends_on = [aws_iam_policy.ecs_modify_policy]
 }
