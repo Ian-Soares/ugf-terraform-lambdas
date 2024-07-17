@@ -44,6 +44,7 @@ variable "schedule_target" {
   type = object({
     target_arn = string
     role_arn   = string
+    input      = optional(string, null)
   })
 }
 

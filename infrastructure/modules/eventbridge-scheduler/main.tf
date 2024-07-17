@@ -9,7 +9,7 @@ resource "aws_scheduler_schedule" "this" {
   count = var.create_schedule ? 1 : 0
 
   name       = var.schedule_name
-  group_name = aws_scheduler_schedule_group.group.0.name
+  group_name = try(aws_scheduler_schedule_group.group.0.name, var.schedule_group_name)
 
   flexible_time_window {
     maximum_window_in_minutes = var.flexible_time_window.maximum_window_in_minutes
@@ -21,5 +21,7 @@ resource "aws_scheduler_schedule" "this" {
   target {
     arn      = var.schedule_target.target_arn
     role_arn = var.schedule_target.role_arn
+
+    input = try(var.schedule_target.input, null) != null ? var.schedule_target.input : null
   }
 }

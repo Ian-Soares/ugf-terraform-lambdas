@@ -13,26 +13,31 @@ variable "create_lambda_function" {
 variable "lambda_function_name" {
   description = "The name of the Lambda function"
   type        = string
+  default     = null
 }
 
 variable "lambda_function_description" {
   description = "The description of the Lambda function"
   type        = string
+  default     = null
 }
 
 variable "lambda_function_handler" {
   description = "The handler function of the Lambda function"
   type        = string
+  default     = null
 }
 
 variable "lambda_function_runtime" {
   description = "The runtime of the Lambda function"
   type        = string
+  default     = null
 }
 
 variable "lambda_function_timeout" {
   description = "The timeout of the Lambda function"
   type        = number
+  default     = 3
 }
 
 variable "lambda_function_memory_size" {
@@ -44,6 +49,7 @@ variable "lambda_function_memory_size" {
 variable "lambda_function_source_code_path" {
   description = "The path to the source code of the Lambda function"
   type        = string
+  default     = null
 }
 
 variable "lambda_vpc_config" {
@@ -58,6 +64,7 @@ variable "lambda_vpc_config" {
 variable "lambda_function_env" {
   description = "The environment variables for the Lambda function"
   type        = map(string)
+  default     = {}
 }
 
 variable "lambda_function_custom_policy_arns" {
@@ -69,6 +76,7 @@ variable "lambda_function_custom_policy_arns" {
 variable "lambda_function_tags" {
   description = "The tags to apply to the Lambda function"
   type        = map(string)
+  default     = {}
 }
 
 variable "create_sns_topic" {
@@ -80,6 +88,7 @@ variable "create_sns_topic" {
 variable "sns_topic_name" {
   description = "The name of the SNS topic"
   type        = string
+  default     = null
 }
 
 variable "sns_topic_subscriptions" {
@@ -118,6 +127,7 @@ variable "create_eventbridge_schedule" {
 variable "eventbridge_schedule_name" {
   description = "The name of the schedule"
   type        = string
+  default     = null
 }
 
 variable "eventbridge_flexible_time_window" {
@@ -136,6 +146,12 @@ variable "eventbridge_schedule_expression" {
   description = "The schedule expression"
   type        = string
   default     = "rate(1 hours)"
+}
+
+variable "eventbridge_schedule_target_input" {
+  description = "The input for the schedule target"
+  type        = string
+  default     = null
 }
 
 variable "eventbridge_tags" {

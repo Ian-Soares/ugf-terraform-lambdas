@@ -4,19 +4,19 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'infrastructure/lambdas/ebs-checker/*'
-      - 'lambdas/ebs-checker/*'
+      - 'infrastructure/lambdas/resizing-service/*'
+      - 'lambdas/resizing-service/*'
   push:
     branches: [ "main" ]
     paths:
-      - 'infrastructure/lambdas/ebs-checker/*'
-      - 'lambdas/ebs-checker/*'
+      - 'infrastructure/lambdas/resizing-service/*'
+      - 'lambdas/resizing-service/*'
 
 permissions:
     contents: read
 
 env:
-  LAMBDA_NAME: ebs-checker
+  LAMBDA_NAME: resizing-service
   AWS_REGION: us-east-2
 
 jobs:
