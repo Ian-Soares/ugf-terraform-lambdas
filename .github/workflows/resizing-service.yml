@@ -1,11 +1,11 @@
 name: Resizing Service
 
 on:
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - 'infrastructure/resizing-service/*'
-      - 'lambdas/resizing-service/*'
+  # pull_request:
+  #   branches: [ "main" ]
+  #   paths:
+  #     - 'infrastructure/resizing-service/*'
+  #     - 'lambdas/resizing-service/*'
   push:
     branches: [ "main" ]
     paths:
