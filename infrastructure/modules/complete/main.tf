@@ -15,7 +15,7 @@ module "lambda_function" {
     security_group_ids = var.lambda_vpc_config.security_group_ids
   } : null
   env                = var.lambda_function_env
-  custom_policy_arns = try(var.lambda_function_custom_policy_arns, [])
+  custom_policy_arns = try(concat(var.lambda_function_custom_policy_arns, ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy"]), ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy"])
   tags               = merge(var.lambda_function_tags, var.default_tags)
 }
 
@@ -28,4 +28,20 @@ module "sns_topic" {
   subscriptions = try(var.sns_topic_subscriptions, [])
 
   tags = merge(var.sns_topic_tags, var.default_tags)
+}
+
+resource "aws_iam_policy" "sns_publish" {
+  name        = "sns-publish-policy"
+  description = "IAM policy for publishing to the SNS topic"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "sns:Publish"
+        Resource = module.sns_topic.arn
+      },
+    ]
+  })
 }
