@@ -15,8 +15,12 @@ module "lambda_function" {
     security_group_ids = var.lambda_vpc_config.security_group_ids
   } : null
   env                = var.lambda_function_env
-  custom_policy_arns = try(concat(var.lambda_function_custom_policy_arns, ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy"]), ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy"])
+  custom_policy_arns = try(concat(var.lambda_function_custom_policy_arns, ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy-${random_id.id.hex}"]), ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/sns-publish-policy-${random_id.id.hex}"])
   tags               = merge(var.lambda_function_tags, var.default_tags)
+
+  depends_on = [
+    aws_iam_policy.sns_publish
+  ]
 }
 
 module "sns_topic" {
@@ -31,7 +35,7 @@ module "sns_topic" {
 }
 
 resource "aws_iam_policy" "sns_publish" {
-  name        = "sns-publish-policy"
+  name        = "sns-publish-policy-${random_id.id.hex}"
   description = "IAM policy for publishing to the SNS topic"
 
   policy = jsonencode({
@@ -40,8 +44,12 @@ resource "aws_iam_policy" "sns_publish" {
       {
         Effect   = "Allow"
         Action   = "sns:Publish"
-        Resource = module.sns_topic.arn
+        Resource = module.sns_topic.topic_arn
       },
     ]
   })
+}
+
+resource "random_id" "id" {
+  byte_length = 8
 }
