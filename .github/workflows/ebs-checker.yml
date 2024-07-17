@@ -57,7 +57,6 @@ jobs:
       if: github.event_name == 'push'
       name: terraform apply
       runs-on: ubuntu-latest
-      environment: Lambdas-UGF
       steps:
 
       - name: Step 01 - Terraform Setup
