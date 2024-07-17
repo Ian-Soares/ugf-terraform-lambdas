@@ -33,6 +33,12 @@ module "complete" {
     }
   ]
 
+  create_eventbridge_schedule_group = true
+  eventbridge_schedule_group_name = "ebs-checker-schedule-group"
+  create_eventbridge_schedule = true
+  eventbridge_schedule_name = "ebs-checker-schedule"
+  eventbridge_schedule_expression = "rate(1 day)"
+
   depends_on = [aws_iam_policy.ebs_modify_policy]
 }
 
