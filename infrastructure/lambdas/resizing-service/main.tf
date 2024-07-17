@@ -68,7 +68,7 @@ module "scale_down_ecs" {
   eventbridge_schedule_group_name   = "resizing-services"
   create_eventbridge_schedule       = true
   eventbridge_schedule_name         = "scale-down-ecs"
-  eventbridge_schedule_expression   = "cron(* * * * ? *)"
+  eventbridge_schedule_expression   = "cron(0 19 * * ? *)"
   eventbridge_schedule_target_input = jsonencode({
     "cluster_name" : "cluster-exemplo-ugf",
     "service_name" : "nginx-example",
