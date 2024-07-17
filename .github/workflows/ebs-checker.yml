@@ -1,0 +1,91 @@
+name: EBS Checker
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'infrastructure/ebs-checker/*'
+      - 'lambdas/ebs-checker/*'
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'infrastructure/ebs-checker/*'
+      - 'lambdas/ebs-checker/*'
+
+permissions:
+    contents: read
+
+env:
+  LAMBDA_NAME: ebs-checker
+  AWS_REGION: us-east-2
+
+jobs:
+    terraform-plan:
+      if: github.event_name == 'pull_request'
+      name: terraform plan
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Step 01 - Terraform Setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+
+      - name: Step 02 - Terraform Version
+        run : terraform --version
+
+      - name: Step 03 - CheckOut GitHub Repo
+        uses: actions/checkout@v3
+
+      - name: Step 04 - Set AWS Account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region           : ${{ env.AWS_REGION }}
+
+      - name: Step 05 - Terraform Init
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} init -input=false
+
+      - name: Step 06 - Terraform Validate
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} validate
+
+      - name: Step 07 - Terraform Plan
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
+
+    terraform-apply:
+      if: github.event_name == 'push'
+      name: terraform apply
+      runs-on: ubuntu-latest
+      environment: Lambdas-UGF
+      steps:
+
+      - name: Step 01 - Terraform Setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.4
+
+      - name: Step 02 - Terraform Version
+        run : terraform --version
+
+      - name: Step 03 - CheckOut GitHub Repo
+        uses: actions/checkout@v3
+
+      - name: Step 04 - Set AWS Account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region           : ${{ env.AWS_REGION }}
+
+      - name: Step 05 - Terraform Init
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} init -input=false
+
+      - name: Step 06 - Terraform Validate
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} validate
+
+      - name: Step 07 - Terraform Plan
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} plan -input=false -out=tfplan
+
+      - name: Step 08 - Terraform Apply
+        run : terraform -chdir=infrastructure/${{ env.LAMBDA_NAME }} apply -input=false tfplan
